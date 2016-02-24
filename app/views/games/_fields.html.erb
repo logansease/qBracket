@@ -1,0 +1,19 @@
+<%= render 'shared/error_messages', :object => f.object %>
+
+<h3>Player 1</h3>
+<div class="form-group">
+  <%= f.select(:player1_id, options_from_collection_for_select(@users, :id, :name )) %>
+</div>
+
+<h2>VS</h2>
+
+<h3>Player 2</h3>
+<div class="form-group">
+  <%= f.select(:player2_id, options_from_collection_for_select(@users, :id, :name )) %>
+</div>
+
+
+<h3>Winner</h3>
+<div class="form-group">
+  <%= f.select(:winner_id, options_from_collection_for_select(@players, :id, :name ),:include_blank => true) %>
+</div>

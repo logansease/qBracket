@@ -1,0 +1,180 @@
+
+This is a simple rails application to track a generic set of games and winners and rank players based on wins and losses.
+
+
+=====================
+
+Note: The documentation below not be as thorough as extensive generated documentation, but it is much easier to view at a glance
+and easier to create and maintain and if we’re all on the same page it is just as insightful.
+
+
+A GENERAL GUIDELINE FOR CALLING RESTFUL API ENDPOINTS
+
+All the endpoints are implemented through paths that follows this standard REST routing pattern.
+By using standard REST, Available endpoints as well as input and responses can be inferred by examining the application data model (schema.rb)
+
+POST / [plural model name] - create a new model, input a json representation of the new model, will return the newly created model
+PUT / [plural model name] / id  - update, input a json representation of the model, will return the updated model
+GET / [plural model name] / id - get a specific item, will return a json reprentation of the model
+GET / [plural model name] - index, or a list of items, possibly filtered by parameters, will return a json array of the model objects
+DELETE / plural model name / id - delete an object
+
+Some example Paths:
+POST /tokens?username=lsease@gmail.com&password=password
+GET /restaurants?access_token=[token]?format=json
+
+
+NESTED JSON OBJECTS:
+Note that objects rendered as json may include nested objects and relationships, but these must be explicitly defined in the controllers. Response objects that include nested objects in their response json will be documented below with the following syntax:
+Parent => (includes Children)
+
+JSON FORMAT:
+You will need to throw a ?format=json or a format type header of application/json in your api call URL at the end to tell the api to render json instead of HTML
+
+AUTHENTICATED REQUESTS:
+Once logged in, when performing authenticated requests, pass in an access_token parameter.
+You may also pass an "Authorization" header with "Bearer [access token]"
+
+NESTED RESOURCES:
+Some resources are defined as nested resources in routes.rb and can be accessed via nested routes, so for example, if a child is a nested resource of a parent, you would do
+POST /parents/1/children to add a new child to that parent
+and get /parents/1/children to list all of that parents children
+This would be represented in routes.rb by
+resources :parents do
+	resources :children
+end
+
+
+=============
+
+Commonly Used Example Endpoints:
+
+--LOGIN:
+Post /tokens
+Params: username, password
+Returns a new Auth Token
+
+-LOGOUT:
+Get /tokens/logout
+Params: None
+Returns: Success
+
+-GET A USER:
+Get /users/[user_id]
+Returns: User
+Auth required
+
+-SIGNUP:
+Post /users
+Params: a user object including a password_confirmation field that matches the password field
+Returns: Access Token => (including User )
+
+-LIST USERS / Leaderboards
+Get /users
+Returns an array of all users, ordered by score
+EXAMPLE RESPONSE:
+[
+    {
+        "id": 1,
+        "name": "Logan Sease",
+        "email": "lsease@gmail.com",
+        "created_at": "2015-12-17T16:54:11.295Z",
+        "updated_at": "2015-12-17T16:54:11.299Z",
+        "admin": true,
+        "fb_user_id": null,
+        "activated": true,
+        "recover_password": false
+    },
+    {
+        "id": 2,
+        "name": "Ryan Moore",
+        "email": "rmoore4146@gmail.com",
+        "created_at": "2015-12-17T16:54:11.301Z",
+        "updated_at": "2015-12-17T16:54:11.303Z",
+        "admin": true,
+        "fb_user_id": null,
+        "activated": true,
+        "recover_password": false
+    }
+]
+
+
+-LIST GAMES
+Get /Games
+Returns an array of games
+
+- Create a game
+Post /Games
+Input: Game Object
+Returns Game Object
+
+EXAMPLE:
+POST /Games?format=json
+{
+    "player2_id": 1,
+    "player1_id": 2,
+    "winner_id": 1
+}
+RESPONSE:
+{
+    "id": 6,
+    "player2_id": 1,
+    "player1_id": 2,
+    "winner_id": 1,
+    "loser_id": null,
+    "created_at": "2015-12-17T19:00:24.798Z",
+    "updated_at": "2015-12-17T19:00:24.798Z"
+}
+
+- Update a game
+PUT /games/gameId
+
+- Post a game winner
+PUT /games/gameId/winner/userId
+RETURNS game:
+EXAMPLE
+http://localhost:3000/games/5/winner/1?format=json
+{
+    "id": 5,
+    "player2_id": 1,
+    "player1_id": 1,
+    "winner_id": 1,
+    "loser_id": 1,
+    "created_at": "2015-12-17T18:53:31.614Z",
+    "updated_at": "2015-12-17T18:53:31.614Z"
+}
+
+
+=====================
+
+Starter application
+
+This project contains tons of awesome stuff that will help you get started with a new Ruby on Rails web app
+very quickly and easily.
+Some of the things already included are:
+
+- Authentication and User Registration
+- Password Recovery
+- Email Confirmation
+- oAUTH
+- Parsing and returning json for API Requests
+- General emailing functionality
+- Facebook Login and Sign up. Link and unlink
+- A Basic User Settings page
+- An Admin Panel and an admin type user
+- Boot Strap integrated
+- A nice layout with header and footer
+- jquery included
+- An image uploader
+- A simple WYSIWYG editor
+- A generic relaionship & connection functionality
+- A "Pages" mechanism to allow you CMS functionality for simple pages
+- A Basic Site map to help with SEO
+- Disqus ready to be integrated
+- An easy to integrate modal function
+- a social sharing mechanism
+- a basic video thumbnail partial
+- Basic encryption and decryption helpers
+- Gravatar and fb image tags for user images
+
+Don't forget to initialize settings found in fog.rb, app_constants.rb and setup_mail.rb and session_store.rb

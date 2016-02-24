@@ -1,0 +1,13 @@
+<% if signed_in?%>
+
+    <%= link_to "Add a game", new_game_path %>
+
+<% else %>
+
+<%= link_to "Sign up now!", signup_path, :class => "signup_button round"%>      
+
+<% end %>
+
+<% @users.each do |user| %>
+    <%= render user, :user => user %>
+<% end %>

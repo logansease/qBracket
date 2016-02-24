@@ -1,0 +1,20 @@
+
+
+		<div class="main">
+			 <h1> 
+			   <%= gravatar_for @user %>
+			   <%= @user.name %>
+			</h1>
+          <p>
+          Score: <%= @user.score %>
+          </p>
+
+          <p>
+            Wins: <%= @user.wins.count %>
+          </p>
+          <p>
+            Losses: <%= @user.losses.count %>
+          </p>
+        </div>
+
+

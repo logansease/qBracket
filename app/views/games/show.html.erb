@@ -1,0 +1,16 @@
+
+  <div>
+    <% if current_user and current_user.admin %>
+         <%= link_to "Edit", edit_game_path(@object) %>
+
+        <% if current_user and current_user.admin? %>
+            | <%= link_to "delete", @object, :method => :delete, :data => { :confirm => "Are you sure?"},
+                          :title => "Delete #{@object.name}"%>
+        <%end%>
+    <% end %>
+
+    <h3><strong><%= @object.name%></strong></h3>
+    <p><%= @object.created_at %></p>
+    <h4><strong>Winner: </strong><%= @object.winner_name%></h4>
+
+  </div>
